@@ -10,6 +10,7 @@ const AuthController = () => import('#controllers/Auth/auth_controller')
 const SitesController = () => import('#controllers/sites_controller')
 const ContentCategoryController = () => import('#controllers/Content/categories_controller')
 const ContentPostController = () => import('#controllers/Content/posts_controller')
+const SocialCommentsController = () => import('#controllers/Social/comments_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -24,16 +25,16 @@ router.post('/auth/register', [AuthController, 'register'])
 router.post('/auth/login', [AuthController, 'login'])
 router.get('/auth/me', [AuthController, 'me']).use([middleware.auth()])
 router.post('/auth/logout', [AuthController, 'logout']).use([middleware.auth()])
-router.resource('/sites', SitesController).only(['index', 'show'])
+router.resource('sites', SitesController).only(['index', 'show'])
 
-// Content Module
 router
   .group(() => {
-    router.resource('/categories', ContentCategoryController).only(['index', 'show'])
-    router.resource('/posts', ContentPostController).only(['index', 'show'])
+    // Content Module
+    router.resource('content/categories', ContentCategoryController).only(['index', 'show'])
+    router.resource('content/posts', ContentPostController).only(['index', 'show'])
+    // Social Module
+    router.resource('social/comments', SocialCommentsController).only(['index', 'store'])
   })
-  .prefix('/content')
-  .as('content')
   .use([middleware.site()])
 
 /*

@@ -5,6 +5,7 @@ import User from '#models/user'
 import Site from '#models/site'
 import Category from '#models/Content/category'
 import Attr from './attr.js'
+import Comment from '#models/Social/comment'
 
 export default class Post extends BaseModel {
   public static table = 'content_posts'
@@ -66,4 +67,12 @@ export default class Post extends BaseModel {
 
   @hasMany(() => Attr, { foreignKey: 'postId' })
   declare attrs: any
+
+  @hasMany(() => Comment, {
+    foreignKey: 'commentableId',
+    onQuery(query) {
+      query.where('commentable_type', 'Post')
+    },
+  })
+  declare comments: any
 }
