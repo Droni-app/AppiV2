@@ -1,19 +1,21 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Category from '#models/Content/category'
+import Post from '#models/Content/post'
 
-export default class CategoriesController {
+export default class PostsController {
   async index({ request, response, site }: HttpContext) {
     const page = request.input('page', 1)
     const limit = request.input('limit', 10)
-    const categories = await Category.query().where('site_id', site.id).paginate(page, limit)
-    return response.ok(categories)
+    const posts = await Post.query().where('site_id', site.id).paginate(page, limit)
+    return response.ok(posts)
   }
 
   async show({ params, response, site }: HttpContext) {
-    const category = await Category.query()
+    const post = await Post.query()
       .where('site_id', site.id)
       .where('slug', params.id)
+      .preload('category')
+      .preload('user')
       .firstOrFail()
-    return response.ok(category)
+    return response.ok(post)
   }
 }

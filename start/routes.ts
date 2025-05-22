@@ -9,6 +9,7 @@
 const AuthController = () => import('#controllers/Auth/auth_controller')
 const SitesController = () => import('#controllers/sites_controller')
 const ContentCategoryController = () => import('#controllers/Content/categories_controller')
+const ContentPostController = () => import('#controllers/Content/posts_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -29,6 +30,7 @@ router.resource('/sites', SitesController).only(['index', 'show'])
 router
   .group(() => {
     router.resource('/categories', ContentCategoryController).only(['index', 'show'])
+    router.resource('/posts', ContentPostController).only(['index', 'show'])
   })
   .prefix('/content')
   .as('content')
@@ -37,10 +39,12 @@ router
 // Back
 const BackContentCategoryController = () =>
   import('#controllers/Back/Content/categories_controller')
+const BackContentPostController = () => import('#controllers/Back/Content/posts_controller')
 // Content Module
 router
   .group(() => {
     router.resource('/categories', BackContentCategoryController).apiOnly()
+    router.resource('/posts', BackContentPostController).apiOnly()
   })
   .prefix('/back/content')
   .as('back.content')
