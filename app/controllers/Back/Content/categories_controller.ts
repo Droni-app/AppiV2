@@ -1,28 +1,78 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import Category from '#models/Content/category'
+import Site from '#models/site'
+import {
+  createCategoryValidator,
+  updateCategoryValidator,
+} from '#validators/Back/Content/category_validator'
+import string from '@adonisjs/core/helpers/string'
 
 export default class CategoriesController {
   /**
-   * Display a list of resource
+   * Listar categorías paginadas del sitio
    */
-  async index({}: HttpContext) {}
+  async index({ request, response, site }: HttpContext & { site: Site }) {
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 10)
+    const categories = await Category.query().where('site_id', site.id).paginate(page, limit)
+    return response.ok(categories)
+  }
 
   /**
-   * Handle form submission for the create action
+   * Crear una nueva categoría para el sitio
    */
-  async store({ request }: HttpContext) {}
+  async store({ request, response, site }: HttpContext & { site: Site }) {
+    const data = await request.validateUsing(createCategoryValidator)
+    // Validar unicidad de slug por site
+    const exists = await Category.query()
+      .where('site_id', site.id)
+      .where('slug', string.slug(data.name).toLocaleLowerCase())
+      .first()
+    const slug = exists
+      ? `${string.slug(data.name).toLocaleLowerCase()}-${Date.now()}`
+      : string.slug(data.name).toLocaleLowerCase()
+    const category = await Category.create({
+      ...data,
+      siteId: site.id,
+      slug,
+    })
+    return response.created(category)
+  }
 
   /**
-   * Show individual record
+   * Mostrar una categoría individual del sitio
    */
-  async show({ params }: HttpContext) {}
+  async show({ params, response, site }: HttpContext & { site: Site }) {
+    const category = await Category.query()
+      .where('site_id', site.id)
+      .where('id', params.id)
+      .firstOrFail()
+    return response.ok(category)
+  }
 
   /**
-   * Handle form submission for the edit action
+   * Actualizar una categoría del sitio
    */
-  async update({ params, request }: HttpContext) {}
+  async update({ params, request, response, site }: HttpContext & { site: Site }) {
+    const category = await Category.query()
+      .where('site_id', site.id)
+      .where('id', params.id)
+      .firstOrFail()
+    const data = await request.validateUsing(updateCategoryValidator)
+    category.merge(data)
+    await category.save()
+    return response.ok(category)
+  }
 
   /**
-   * Delete record
+   * Eliminar una categoría del sitio
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, site }: HttpContext & { site: Site }) {
+    const category = await Category.query()
+      .where('site_id', site.id)
+      .where('id', params.id)
+      .firstOrFail()
+    await category.delete()
+    return response.noContent()
+  }
 }
