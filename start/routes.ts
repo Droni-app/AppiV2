@@ -6,6 +6,7 @@
 | The routes file is used for defining the HTTP routes.
 |
 */
+const AuthController = () => import('#controllers/Auth/auth_controller')
 
 import router from '@adonisjs/core/services/router'
 
@@ -14,3 +15,5 @@ router.get('/', async () => {
     hello: 'world',
   }
 })
+
+router.post('/auth/register', [AuthController, 'register'])
