@@ -1,7 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
-import hash from '@adonisjs/core/services/hash'
-import { registerValidator } from '#validators/auth_validator'
+import { registerValidator, loginValidator } from '#validators/Auth/auth_validator'
 
 export default class AuthController {
   async register({ request, response }: HttpContext) {
@@ -9,16 +8,33 @@ export default class AuthController {
     const user = await User.create({
       name: data.name,
       email: data.email,
-      password: await hash.make(data.password),
+      password: data.password,
     })
-    return response.created({
-      message: 'Usuario registrado exitosamente',
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: user.createdAt,
-      },
-    })
+    console.log(data.password)
+    return response.created(user)
+  }
+
+  async login({ request }: HttpContext) {
+    const { email, password } = await request.validateUsing(loginValidator)
+    const user = await User.verifyCredentials(email, password)
+    // Generar token de acceso con el guard API
+    const token = await User.accessTokens.create(user)
+    return {
+      user,
+      token,
+    }
+  }
+
+  async me({ auth }: HttpContext) {
+    return {
+      user: auth.user,
+    }
+  }
+
+  async logout({ auth }: HttpContext) {
+    await auth.use('api').invalidateToken()
+    return {
+      user: auth.user,
+    }
   }
 }
