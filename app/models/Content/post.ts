@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, beforeCreate, belongsTo } from '@adonisjs/lucid/orm'
+import { BaseModel, column, beforeCreate, belongsTo, hasMany } from '@adonisjs/lucid/orm'
 import { randomUUID } from 'node:crypto'
 import User from '#models/user'
 import Site from '#models/site'
 import Category from '#models/Content/category'
+import Attr from './attr.js'
 
 export default class Post extends BaseModel {
   public static table = 'content_posts'
@@ -62,4 +63,7 @@ export default class Post extends BaseModel {
 
   @belongsTo(() => Category, { foreignKey: 'categoryId' })
   declare category: any
+
+  @hasMany(() => Attr, { foreignKey: 'postId' })
+  declare attrs: any
 }

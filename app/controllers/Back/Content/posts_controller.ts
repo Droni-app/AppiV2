@@ -25,6 +25,7 @@ export default class PostsController {
       .where('id', params.id)
       .preload('category')
       .preload('user')
+      .preload('attrs')
       .firstOrFail()
     return response.ok(post)
   }

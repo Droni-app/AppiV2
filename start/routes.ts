@@ -36,15 +36,23 @@ router
   .as('content')
   .use([middleware.site()])
 
-// Back
+/*
+|--------------------------------------------------------------------------
+| Back Module
+|--------------------------------------------------------------------------
+*/
 const BackContentCategoryController = () =>
   import('#controllers/Back/Content/categories_controller')
 const BackContentPostController = () => import('#controllers/Back/Content/posts_controller')
+const BackPostContentAttrsController = () =>
+  import('#controllers/Back/Content/post_attrs_controller')
+
 // Content Module
 router
   .group(() => {
-    router.resource('/categories', BackContentCategoryController).apiOnly()
-    router.resource('/posts', BackContentPostController).apiOnly()
+    router.resource('categories', BackContentCategoryController).apiOnly()
+    router.resource('posts', BackContentPostController).apiOnly()
+    router.resource('posts.attrs', BackPostContentAttrsController).only(['store', 'destroy'])
   })
   .prefix('/back/content')
   .as('back.content')
