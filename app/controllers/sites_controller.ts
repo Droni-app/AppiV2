@@ -8,10 +8,7 @@ export default class SitesController {
   }
 
   async show({ params, response }: HttpContext) {
-    const site = await Site.find(params.id)
-    if (!site) {
-      return response.notFound({ message: 'Sitio no encontrado' })
-    }
+    const site = await Site.findOrFail(params.id)
     return response.ok(site)
   }
 }

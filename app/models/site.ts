@@ -6,7 +6,7 @@ export default class Site extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
 
-  @column()
+  @column({ serializeAs: null })
   declare secret: string | null
 
   @column()

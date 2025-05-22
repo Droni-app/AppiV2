@@ -1,11 +1,12 @@
 import Site from '#models/site'
+import string from '@adonisjs/core/helpers/string'
 
 export default class SiteSeeder {
   public async run() {
     await Site.create({
       name: 'Droni.co',
-      domain: 'principal.com',
-      secret: null,
+      domain: 'droni.co',
+      secret: string.generateRandom(32),
       description: 'Sitio principal de la plataforma',
       logo: null,
       icon: null,
@@ -16,7 +17,7 @@ export default class SiteSeeder {
     await Site.create({
       name: 'Kosante',
       domain: 'secundario.com',
-      secret: null,
+      secret: string.generateRandom(32),
       description: 'Sitio secundario de pruebas',
       logo: null,
       icon: null,

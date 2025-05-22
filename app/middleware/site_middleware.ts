@@ -8,7 +8,7 @@ export default class SiteMiddleware {
      * Middleware logic goes here (before the next call)
      */
     const { key } = ctx.request.headers()
-    const site = await Site.findOrFail(key)
+    const site = await Site.find(key)
     ctx.site = site
 
     /**

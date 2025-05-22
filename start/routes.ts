@@ -31,4 +31,17 @@ router
     router.resource('/categories', ContentCategoryController).only(['index', 'show'])
   })
   .prefix('/content')
-  .middleware([middleware.site()])
+  .as('content')
+  .use([middleware.site()])
+
+// Back
+const BackContentCategoryController = () =>
+  import('#controllers/Back/Content/categories_controller')
+// Content Module
+router
+  .group(() => {
+    router.resource('/categories', BackContentCategoryController).apiOnly()
+  })
+  .prefix('/back/content')
+  .as('back.content')
+  .use([middleware.auth(), middleware.admin_site()])
