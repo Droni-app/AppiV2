@@ -19,10 +19,7 @@ export default class CommentsController {
   }
 
   async store({ request, response, auth, site }: HttpContext) {
-    const user = await auth.authenticate()
-    if (!user) {
-      return response.unauthorized({ message: 'Unauthorized' })
-    }
+    const user = auth.user!
     const payload = await request.validateUsing(createCommentValidator)
 
     // Validar que el objeto a comentar exista

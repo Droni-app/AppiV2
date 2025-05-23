@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import Site from '#models/site'
 import User from '#models/user'
 
-export default class Course extends BaseModel {
+export default class LearnCourse extends BaseModel {
   public static table = 'learn_courses'
 
   @column({ isPrimary: true })
@@ -40,6 +40,9 @@ export default class Course extends BaseModel {
   @column()
   declare open: boolean
 
+  @column()
+  declare ranking: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -47,7 +50,7 @@ export default class Course extends BaseModel {
   declare updatedAt: DateTime | null
 
   @beforeCreate()
-  static assignUuid(course: Course) {
+  static assignUuid(course: LearnCourse) {
     if (!course.id) {
       course.id = randomUUID()
     }

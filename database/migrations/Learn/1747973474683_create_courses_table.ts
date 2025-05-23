@@ -1,7 +1,7 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'courses'
+  protected tableName = 'learn_courses'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
@@ -17,7 +17,7 @@ export default class extends BaseSchema {
       table.string('video').nullable()
       table.text('description').nullable()
       table.boolean('open').notNullable().defaultTo(true)
-
+      table.decimal('ranking', 3, 2).notNullable().defaultTo(0)
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
