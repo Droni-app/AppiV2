@@ -9,6 +9,9 @@ export default class SiteMiddleware {
      */
     const { key } = ctx.request.headers()
     const site = await Site.find(key)
+    if (!site) {
+      throw new Error('Site not found')
+    }
     ctx.site = site
 
     /**

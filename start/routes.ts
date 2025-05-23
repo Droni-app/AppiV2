@@ -60,6 +60,9 @@ const BackContentPostController = () => import('#controllers/Back/Content/posts_
 const BackPostContentAttrsController = () =>
   import('#controllers/Back/Content/post_attrs_controller')
 const BackSocialCommentsController = () => import('#controllers/Back/Social/comments_controller')
+const BackLearnCoursesController = () => import('#controllers/Back/Learn/courses_controller')
+const BackLearnCourseLessonsController = () =>
+  import('#controllers/Back/Learn/course_lessons_controller')
 
 router
   .group(() => {
@@ -73,5 +76,8 @@ router
     router
       .resource('back/social/comments', BackSocialCommentsController)
       .only(['index', 'update', 'destroy'])
+    // Learn Module
+    router.resource('back/learn/courses', BackLearnCoursesController).apiOnly()
+    router.resource('back/learn/courses.lessons', BackLearnCourseLessonsController).apiOnly()
   })
   .use([middleware.auth(), middleware.admin_site()])
