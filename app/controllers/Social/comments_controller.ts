@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Comment from '#models/Social/comment'
+import SocialComment from '#models/Social/comment'
 import { createCommentValidator, indexCommentValidator } from '#validators/Social/comment_validator'
 import { DateTime } from 'luxon'
 
@@ -7,7 +7,7 @@ export default class CommentsController {
   async index({ request, response, site }: HttpContext) {
     const payload = await request.validateUsing(indexCommentValidator)
     const { commentableType, commentableId, page = 1, limit = 10 } = payload
-    const comments = await Comment.query()
+    const comments = await SocialComment.query()
       .where('commentable_type', commentableType)
       .where('commentable_id', commentableId)
       .where('site_id', site.id)
@@ -43,7 +43,7 @@ export default class CommentsController {
     // Validar si el comentario debe aprobarse automáticamente
     let approvedAt: import('luxon').DateTime | null = null
     let approvedCount = 0
-    const approvedCountResult = await Comment.query()
+    const approvedCountResult = await SocialComment.query()
       .where('user_id', user.id)
       .where('site_id', site.id)
       .whereNotNull('approved_at')
@@ -56,7 +56,7 @@ export default class CommentsController {
       approvedAt = DateTime.now()
     }
 
-    const comment = await Comment.create({
+    const comment = await SocialComment.create({
       userId: user.id,
       siteId: site.id,
       commentableType: payload.commentableType,

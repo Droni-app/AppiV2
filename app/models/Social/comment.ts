@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import User from '#models/user'
 import Site from '#models/site'
 
-export default class Comment extends BaseModel {
+export default class SocialComment extends BaseModel {
   public static table = 'social_comments'
 
   @column({ isPrimary: true })
@@ -35,7 +35,7 @@ export default class Comment extends BaseModel {
   declare updatedAt: DateTime | null
 
   @beforeCreate()
-  static assignUuid(comment: Comment) {
+  static assignUuid(comment: SocialComment) {
     if (!comment.id) {
       comment.id = randomUUID()
     }

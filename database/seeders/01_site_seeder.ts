@@ -14,16 +14,5 @@ export default class SiteSeeder {
       providerClientId: null,
       providerClientSecret: null,
     })
-    await Site.create({
-      name: 'Kosante',
-      domain: 'secundario.com',
-      secret: string.generateRandom(32),
-      description: 'Sitio secundario de pruebas',
-      logo: null,
-      icon: null,
-      provider: null,
-      providerClientId: null,
-      providerClientSecret: null,
-    })
   }
 }

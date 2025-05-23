@@ -18,7 +18,10 @@ export default class SiteMiddleware {
       .where('user_id', user.id)
       .where('role', 'admin')
       .preload('site')
-      .firstOrFail()
+      .first()
+    if (!enrollment) {
+      throw new Error('You are not authorized to access this site')
+    }
     ctx.site = enrollment.site
 
     /**

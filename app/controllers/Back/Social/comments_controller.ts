@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Comment from '#models/Social/comment'
+import SocialComment from '#models/Social/comment'
 import { createCommentValidator } from '#validators/Social/comment_validator'
 
 export default class CommentsController {
@@ -7,7 +7,7 @@ export default class CommentsController {
     const page = request.input('page', 1)
     const limit = request.input('limit', 10)
     const commentableId = request.input('commentableId')
-    const query = Comment.query().where('site_id', site.id)
+    const query = SocialComment.query().where('site_id', site.id)
     if (commentableId) {
       query.where('commentable_id', commentableId)
     }
@@ -16,7 +16,7 @@ export default class CommentsController {
   }
 
   async update({ params, request, response, site }: HttpContext) {
-    const comment = await Comment.query()
+    const comment = await SocialComment.query()
       .where('site_id', site.id)
       .where('id', params.id)
       .firstOrFail()
@@ -27,7 +27,7 @@ export default class CommentsController {
   }
 
   async destroy({ params, response, site }: HttpContext) {
-    const comment = await Comment.query()
+    const comment = await SocialComment.query()
       .where('site_id', site.id)
       .where('id', params.id)
       .firstOrFail()
