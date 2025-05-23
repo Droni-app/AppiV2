@@ -1,7 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Comment from '#models/Social/comment'
 import { createCommentValidator } from '#validators/Social/comment_validator'
-import { DateTime } from 'luxon'
 
 export default class CommentsController {
   async index({ request, response, site }: HttpContext) {
@@ -14,29 +13,6 @@ export default class CommentsController {
     }
     const comments = await query.orderBy('created_at', 'desc').preload('user').paginate(page, limit)
     return response.ok(comments)
-  }
-
-  async show({ params, response, site }: HttpContext) {
-    const comment = await Comment.query()
-      .where('site_id', site.id)
-      .where('id', params.id)
-      .preload('user')
-      .firstOrFail()
-    return response.ok(comment)
-  }
-
-  async store({ request, response, auth, site }: HttpContext) {
-    const user = await auth.authenticate()
-    const payload = await request.validateUsing(createCommentValidator)
-    const comment = await Comment.create({
-      userId: user.id,
-      siteId: site.id,
-      commentableType: payload.commentableType,
-      commentableId: payload.commentableId,
-      content: payload.content,
-      approvedAt: DateTime.now(),
-    })
-    return response.created(comment)
   }
 
   async update({ params, request, response, site }: HttpContext) {

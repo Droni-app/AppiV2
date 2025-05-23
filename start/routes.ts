@@ -49,22 +49,17 @@ const BackPostContentAttrsController = () =>
   import('#controllers/Back/Content/post_attrs_controller')
 const BackSocialCommentsController = () => import('#controllers/Back/Social/comments_controller')
 
-// Content Module
 router
   .group(() => {
-    router.resource('categories', BackContentCategoryController).apiOnly()
-    router.resource('posts', BackContentPostController).apiOnly()
-    router.resource('posts.attrs', BackPostContentAttrsController).only(['store', 'destroy'])
+    // Content Module
+    router.resource('back/content/categories', BackContentCategoryController).apiOnly()
+    router.resource('back/content/posts', BackContentPostController).apiOnly()
+    router
+      .resource('back/content/posts.attrs', BackPostContentAttrsController)
+      .only(['store', 'destroy'])
+    // Social Module
+    router
+      .resource('back/social/comments', BackSocialCommentsController)
+      .only(['index', 'update', 'destroy'])
   })
-  .prefix('/back/content')
-  .as('back.content')
-  .use([middleware.auth(), middleware.admin_site()])
-
-// Social Module
-router
-  .group(() => {
-    router.resource('/comments', BackSocialCommentsController).apiOnly()
-  })
-  .prefix('/back/social')
-  .as('back.social')
   .use([middleware.auth(), middleware.admin_site()])
