@@ -1,5 +1,5 @@
 import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
-import Post from './post.js'
+import ContentPost from './post.js'
 import { randomUUID } from 'node:crypto'
 
 export default class Attr extends BaseModel {
@@ -28,6 +28,6 @@ export default class Attr extends BaseModel {
   }
 
   // Define relationships if needed
-  @belongsTo(() => Post, { foreignKey: 'postId' })
+  @belongsTo(() => ContentPost, { foreignKey: 'postId' })
   declare post: any
 }

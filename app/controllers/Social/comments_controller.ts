@@ -27,10 +27,10 @@ export default class CommentsController {
 
     // Validar que el objeto a comentar exista
     let exists = false
-    if (payload.commentableType === 'Post') {
-      const PostModule = await import('#models/Content/post')
-      const Post = PostModule.default
-      exists = !!(await Post.query()
+    if (payload.commentableType === 'ContentPost') {
+      const ContentPostModule = await import('#models/Content/post')
+      const ContentPost = ContentPostModule.default
+      exists = !!(await ContentPost.query()
         .where('id', payload.commentableId)
         .where('site_id', site.id)
         .where('active', true)

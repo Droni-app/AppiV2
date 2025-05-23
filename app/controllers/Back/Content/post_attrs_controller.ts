@@ -1,10 +1,10 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Attr from '#models/Content/attr'
-import Post from '#models/Content/post'
+import ContentPost from '#models/Content/post'
 
 export default class PostAttrsController {
   async store({ request, response, params, site }: HttpContext) {
-    const post = await Post.query()
+    const post = await ContentPost.query()
       .where('site_id', site.id)
       .where('id', params.post_id)
       .firstOrFail()
@@ -17,7 +17,7 @@ export default class PostAttrsController {
   }
 
   async destroy({ response, params, site }: HttpContext) {
-    const post = await Post.query()
+    const post = await ContentPost.query()
       .where('site_id', site.id)
       .where('id', params.post_id)
       .firstOrFail()

@@ -7,7 +7,7 @@ import Category from '#models/Content/category'
 import Attr from './attr.js'
 import Comment from '#models/Social/comment'
 
-export default class Post extends BaseModel {
+export default class ContentPost extends BaseModel {
   public static table = 'content_posts'
 
   @column({ isPrimary: true })
@@ -50,7 +50,7 @@ export default class Post extends BaseModel {
   declare updatedAt: DateTime | null
 
   @beforeCreate()
-  static assignUuid(post: Post) {
+  static assignUuid(post: ContentPost) {
     if (!post.id) {
       post.id = randomUUID()
     }
