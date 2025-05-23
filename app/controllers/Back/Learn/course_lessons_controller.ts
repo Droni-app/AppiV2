@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import LearnLesson from '#models/Learn/lesson'
 import { BackLearnLessonValidator } from '#validators/Back/Learn/lesson_validator'
 import LearnCourse from '#models/Learn/course'
+import string from '@adonisjs/core/helpers/string'
 
 export default class BackLearnCourseLessonsController {
   public async index({ request, response, site, params }: HttpContext) {
@@ -13,13 +14,12 @@ export default class BackLearnCourseLessonsController {
       .where('id', params.back_learn_course_id)
       .firstOrFail()
 
-    const lessons = LearnLesson.query()
+    const lessons = await LearnLesson.query()
       .where('learn_course_id', course.id)
       .if(q, (qB) => {
         qB.whereILike('name', `%${q}%`).orWhereILike('description', `%${q}%`)
       })
       .orderBy('position', 'asc')
-      .preload('learnCourse')
       .paginate(page, perPage)
 
     return response.ok(lessons)
@@ -43,9 +43,28 @@ export default class BackLearnCourseLessonsController {
       .where('site_id', site.id)
       .where('id', params.back_learn_course_id)
       .firstOrFail()
+
+    // Check if slug exists
+    const baseSlug = string.slug(data.name).toLowerCase()
+    const exists = await LearnLesson.query()
+      .where('slug', baseSlug)
+      .where('learn_course_id', course.id)
+      .first()
+
+    // If data.position is null find next position
+    if (data.position === null || data.position === undefined) {
+      const lastLesson = await LearnLesson.query()
+        .where('learn_course_id', course.id)
+        .orderBy('position', 'desc')
+        .first()
+      data.position = lastLesson ? lastLesson.position + 1 : 1
+    }
+
+    const slug = exists ? `${baseSlug}-${Date.now()}` : baseSlug
     const lesson = await LearnLesson.create({
       ...data,
       learnCourseId: course.id,
+      slug,
     })
     return response.created(lesson)
   }

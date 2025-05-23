@@ -1,10 +1,11 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
 import LearnCourse from '#models/Learn/course'
+import { randomUUID } from 'node:crypto'
 
 export default class LearnLesson extends BaseModel {
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
 
   @column()
   declare learnCourseId: string
@@ -47,6 +48,13 @@ export default class LearnLesson extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @beforeCreate()
+  static assignUuid(lesson: LearnLesson) {
+    if (!lesson.id) {
+      lesson.id = randomUUID()
+    }
+  }
 
   @belongsTo(() => LearnCourse, { foreignKey: 'learnCourseId' })
   declare learnCourse: any

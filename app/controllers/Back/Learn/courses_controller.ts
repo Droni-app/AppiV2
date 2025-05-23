@@ -19,6 +19,7 @@ export default class BackLearnCoursesController {
         qB.where('category', category)
       })
       .orderBy('created_at', 'desc')
+      .preload('user')
       .paginate(page, perPage)
     return response.ok(courses)
   }
@@ -28,6 +29,7 @@ export default class BackLearnCoursesController {
       .where('id', params.id)
       .where('site_id', site.id)
       .preload('user')
+      .preload('learnLessons')
       .firstOrFail()
     return response.ok(course)
   }
