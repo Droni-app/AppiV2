@@ -47,6 +47,7 @@ const BackContentCategoryController = () =>
 const BackContentPostController = () => import('#controllers/Back/Content/posts_controller')
 const BackPostContentAttrsController = () =>
   import('#controllers/Back/Content/post_attrs_controller')
+const BackSocialCommentsController = () => import('#controllers/Back/Social/comments_controller')
 
 // Content Module
 router
@@ -57,4 +58,13 @@ router
   })
   .prefix('/back/content')
   .as('back.content')
+  .use([middleware.auth(), middleware.admin_site()])
+
+// Social Module
+router
+  .group(() => {
+    router.resource('/comments', BackSocialCommentsController).apiOnly()
+  })
+  .prefix('/back/social')
+  .as('back.social')
   .use([middleware.auth(), middleware.admin_site()])
