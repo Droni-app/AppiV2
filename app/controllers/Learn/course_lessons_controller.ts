@@ -11,7 +11,6 @@ export default class BackLearnCourseLessonsController {
       .where('site_id', site.id)
       .where('slug', params.learn_course_id)
       .firstOrFail()
-    console.log(course)
 
     const lessons = await LearnLesson.query()
       .where('learn_course_id', course.id)

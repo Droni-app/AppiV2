@@ -12,7 +12,6 @@ export default class AuthController {
       email: data.email,
       password: data.password,
     })
-    console.log(data.password)
     return response.created(user)
   }
 
