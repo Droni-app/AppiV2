@@ -10,6 +10,7 @@ const AuthController = () => import('#controllers/Auth/auth_controller')
 const SitesController = () => import('#controllers/sites_controller')
 const ContentCategoryController = () => import('#controllers/Content/categories_controller')
 const ContentPostController = () => import('#controllers/Content/posts_controller')
+const ContentAttachmentsController = () => import('#controllers/Content/attachments_controller')
 const SocialCommentsController = () => import('#controllers/Social/comments_controller')
 const LearnCoursesController = () => import('#controllers/Learn/courses_controller')
 const LearnCourseLessonsController = () => import('#controllers/Learn/course_lessons_controller')
@@ -46,6 +47,10 @@ router
 // Private routes
 router
   .group(() => {
+    // Content Module
+    router
+      .resource('content/attachments', ContentAttachmentsController)
+      .only(['index', 'store', 'destroy'])
     // Social Module
     router.resource('social/comments', SocialCommentsController).only(['store'])
   })

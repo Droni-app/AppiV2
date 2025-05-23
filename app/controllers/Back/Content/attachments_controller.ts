@@ -1,7 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ContentAttachment from '#models/Content/attachment'
-import fs from 'node:fs'
 import { createAttachmentValidator } from '#validators/Back/Content/attachment_validator'
+import string from '@adonisjs/core/helpers/string'
+import drive from '@adonisjs/drive/services/main'
 
 export default class AttachmentsController {
   /**
@@ -12,12 +13,15 @@ export default class AttachmentsController {
     const perPage = request.input('perPage', 10)
     const q = request.input('q')
 
-    const query = ContentAttachment.query().where('site_id', site.id)
-    if (q) {
-      query.whereILike('name', `%${q}%`)
-    }
-
-    const attachments = await query.orderBy('created_at', 'desc').paginate(page, perPage)
+    const attachments = await ContentAttachment.query()
+      .where('site_id', site.id)
+      .if(q, (qB) => {
+        qB.whereILike('name', `%${q}%`)
+      })
+      .preload('user')
+      .preload('site')
+      .orderBy('created_at', 'desc')
+      .paginate(page, perPage)
     return response.ok(attachments)
   }
 
@@ -27,14 +31,17 @@ export default class AttachmentsController {
   public async store({ request, response, site, auth }: HttpContext) {
     // Validar nombre si se proporciona
     const payload = await request.validateUsing(createAttachmentValidator)
-    const fileName = `${Date.now()}-${payload.file.clientName}`
+    const path = `${site.id}/${auth.user!.id}/${payload.file.size}-${string.slug(payload.file.clientName)}`
+
+    // store file
+    await payload.file.moveToDisk(path)
 
     // Crear el registro en la base de datos
     const attachment = await ContentAttachment.create({
       siteId: site.id,
       userId: auth.user!.id,
-      name: payload.name || payload.file.clientName,
-      path: `uploads/${fileName}`,
+      name: payload.name ?? payload.file.clientName,
+      path: payload.file.meta?.path ?? path,
       size: payload.file.size,
       mime: payload.file.type ?? payload.file.subtype,
     })
@@ -52,14 +59,8 @@ export default class AttachmentsController {
       .firstOrFail()
 
     // Eliminar el archivo físico
-    try {
-      const filePath = `./public/${attachment.path}`
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath)
-      }
-    } catch (error) {
-      console.error('Error al eliminar archivo físico:', error)
-    }
+    const disk = drive.use()
+    await disk.delete(attachment.path)
 
     await attachment.delete()
     return response.noContent()
