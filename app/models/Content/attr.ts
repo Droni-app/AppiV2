@@ -3,6 +3,8 @@ import Post from './post.js'
 import { randomUUID } from 'node:crypto'
 
 export default class Attr extends BaseModel {
+  public static table = 'content_attrs'
+
   @column({ isPrimary: true })
   declare id: string
 

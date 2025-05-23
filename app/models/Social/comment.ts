@@ -5,7 +5,7 @@ import User from '#models/user'
 import Site from '#models/site'
 
 export default class Comment extends BaseModel {
-  public static table = 'comments'
+  public static table = 'social_comments'
 
   @column({ isPrimary: true })
   declare id: string

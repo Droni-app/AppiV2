@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto'
 
 export default class Category extends BaseModel {
   public static table = 'content_categories'
+
   @column({ isPrimary: true })
   declare id: string
 
