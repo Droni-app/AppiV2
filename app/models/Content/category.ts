@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, beforeCreate } from '@adonisjs/lucid/orm'
 import { randomUUID } from 'node:crypto'
 
-export default class Category extends BaseModel {
+export default class ContentCategory extends BaseModel {
   public static table = 'content_categories'
 
   @column({ isPrimary: true })
@@ -30,7 +30,7 @@ export default class Category extends BaseModel {
   declare updatedAt: DateTime | null
 
   @beforeCreate()
-  static assignUuid(category: Category) {
+  static assignUuid(category: ContentCategory) {
     if (!category.id) {
       category.id = randomUUID()
     }

@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
       table
-        .uuid('post_id')
+        .uuid('content_post_id')
         .notNullable()
         .references('id')
         .inTable('content_posts')

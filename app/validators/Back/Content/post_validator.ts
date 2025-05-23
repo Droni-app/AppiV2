@@ -2,7 +2,7 @@ import vine from '@vinejs/vine'
 
 export const createPostValidator = vine.compile(
   vine.object({
-    categoryId: vine.string().uuid().nullable().optional(),
+    contentCategoryId: vine.string().uuid().nullable().optional(),
     name: vine.string().trim().minLength(2).maxLength(100),
     description: vine.string().maxLength(255).nullable().optional(),
     picture: vine.string().url().nullable().optional(),
@@ -14,7 +14,7 @@ export const createPostValidator = vine.compile(
 
 export const updatePostValidator = vine.compile(
   vine.object({
-    categoryId: vine.string().uuid().nullable().optional(),
+    contentCategoryId: vine.string().uuid().nullable().optional(),
     name: vine.string().trim().minLength(2).maxLength(100).optional(),
     description: vine.string().maxLength(255).nullable().optional(),
     picture: vine.string().url().nullable().optional(),

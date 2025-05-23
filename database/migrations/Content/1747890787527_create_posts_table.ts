@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE')
       table.uuid('site_id').notNullable().references('id').inTable('sites').onDelete('CASCADE')
       table
-        .uuid('category_id')
+        .uuid('content_category_id')
         .nullable()
         .references('id')
         .inTable('content_categories')

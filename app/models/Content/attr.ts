@@ -2,14 +2,14 @@ import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
 import ContentPost from './post.js'
 import { randomUUID } from 'node:crypto'
 
-export default class Attr extends BaseModel {
+export default class ContentAttr extends BaseModel {
   public static table = 'content_attrs'
 
   @column({ isPrimary: true })
   declare id: string
 
   @column()
-  declare postId: string
+  declare contentPostId: string
 
   @column()
   declare name: string
@@ -21,13 +21,13 @@ export default class Attr extends BaseModel {
   declare value: string
 
   @beforeCreate()
-  static assignUuid(attr: Attr) {
+  static assignUuid(attr: ContentAttr) {
     if (!attr.id) {
       attr.id = randomUUID()
     }
   }
 
   // Define relationships if needed
-  @belongsTo(() => ContentPost, { foreignKey: 'postId' })
-  declare post: any
+  @belongsTo(() => ContentPost, { foreignKey: 'contentPostId' })
+  declare contentPost: any
 }

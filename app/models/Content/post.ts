@@ -3,8 +3,8 @@ import { BaseModel, column, beforeCreate, belongsTo, hasMany } from '@adonisjs/l
 import { randomUUID } from 'node:crypto'
 import User from '#models/user'
 import Site from '#models/site'
-import Category from '#models/Content/category'
-import Attr from './attr.js'
+import ContentCategory from '#models/Content/category'
+import ContentAttr from './attr.js'
 import Comment from '#models/Social/comment'
 
 export default class ContentPost extends BaseModel {
@@ -20,7 +20,7 @@ export default class ContentPost extends BaseModel {
   declare siteId: string
 
   @column()
-  declare categoryId: string | null
+  declare contentCategoryId: string | null
 
   @column()
   declare slug: string
@@ -62,16 +62,16 @@ export default class ContentPost extends BaseModel {
   @belongsTo(() => Site, { foreignKey: 'siteId' })
   declare site: any
 
-  @belongsTo(() => Category, { foreignKey: 'categoryId' })
-  declare category: any
+  @belongsTo(() => ContentCategory, { foreignKey: 'contentCategoryId' })
+  declare contentCategory: any
 
-  @hasMany(() => Attr, { foreignKey: 'postId' })
-  declare attrs: any
+  @hasMany(() => ContentAttr, { foreignKey: 'contentPostId' })
+  declare contentAttrs: any
 
   @hasMany(() => Comment, {
     foreignKey: 'commentableId',
     onQuery(query) {
-      query.where('commentable_type', 'Post')
+      query.where('commentable_type', 'ContentPost')
     },
   })
   declare comments: any

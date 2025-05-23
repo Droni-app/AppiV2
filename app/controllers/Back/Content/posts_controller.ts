@@ -10,8 +10,8 @@ export default class PostsController {
     const q = request.input('q', '')
     const posts = await ContentPost.query()
       .where('site_id', site.id)
-      .preload('category')
       .preload('user')
+      .preload('contentCategory')
       .if(q, (query) => {
         query.where('name', 'LIKE', `%${q}%`).orWhere('description', 'LIKE', `%${q}%`)
       })
@@ -23,9 +23,9 @@ export default class PostsController {
     const post = await ContentPost.query()
       .where('site_id', site.id)
       .where('id', params.id)
-      .preload('category')
       .preload('user')
-      .preload('attrs')
+      .preload('contentCategory')
+      .preload('contentAttrs')
       .firstOrFail()
     return response.ok(post)
   }
