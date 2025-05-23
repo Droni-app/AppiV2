@@ -61,6 +61,8 @@ const BackContentCategoryController = () =>
 const BackContentPostController = () => import('#controllers/Back/Content/posts_controller')
 const BackPostContentAttrsController = () =>
   import('#controllers/Back/Content/post_attrs_controller')
+const BackContentAttachmentsController = () =>
+  import('#controllers/Back/Content/attachments_controller')
 const BackSocialCommentsController = () => import('#controllers/Back/Social/comments_controller')
 const BackLearnCoursesController = () => import('#controllers/Back/Learn/courses_controller')
 const BackLearnCourseLessonsController = () =>
@@ -74,6 +76,10 @@ router
     router
       .resource('back/content/posts.attrs', BackPostContentAttrsController)
       .only(['store', 'destroy'])
+    router
+      .resource('back/content/attachments', BackContentAttachmentsController)
+      .apiOnly()
+      .except(['show', 'update'])
     // Social Module
     router
       .resource('back/social/comments', BackSocialCommentsController)
