@@ -25,8 +25,9 @@ export default class LearnCoursesController {
 
   public async show({ params, response, site }: HttpContext) {
     const course = await LearnCourse.query()
-      .where('id', params.id)
+      .where('slug', params.id)
       .where('site_id', site.id)
+      .preload('user')
       .firstOrFail()
     return response.ok(course)
   }

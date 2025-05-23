@@ -39,6 +39,9 @@ export default class LearnLesson extends BaseModel {
   @column.date()
   declare limitDate: DateTime | null
 
+  @column()
+  declare active: boolean
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

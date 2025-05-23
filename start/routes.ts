@@ -12,6 +12,7 @@ const ContentCategoryController = () => import('#controllers/Content/categories_
 const ContentPostController = () => import('#controllers/Content/posts_controller')
 const SocialCommentsController = () => import('#controllers/Social/comments_controller')
 const LearnCoursesController = () => import('#controllers/Learn/courses_controller')
+const LearnCourseLessonsController = () => import('#controllers/Learn/course_lessons_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -38,6 +39,7 @@ router
     router.resource('social/comments', SocialCommentsController).only(['index'])
     // Learn Module
     router.resource('learn/courses', LearnCoursesController).only(['index', 'show'])
+    router.resource('learn/courses.lessons', LearnCourseLessonsController).only(['index', 'show'])
   })
   .use([middleware.site()])
 

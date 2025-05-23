@@ -23,6 +23,7 @@ export default class extends BaseSchema {
       table.text('description').nullable()
       table.text('content', 'longtext').nullable()
       table.date('limit_date').nullable()
+      table.boolean('active').notNullable().defaultTo(true)
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
