@@ -33,6 +33,7 @@ export default class BackLearnCourseQuestionController {
       .where('id', params.id)
       .where('course_id', course.id)
       .firstOrFail()
+
     return response.ok(question)
   }
 

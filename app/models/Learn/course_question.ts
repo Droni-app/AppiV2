@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, beforeCreate, belongsTo } from '@adonisjs/lucid/orm'
+import { BaseModel, column, beforeCreate, belongsTo, beforeSave } from '@adonisjs/lucid/orm'
 import { randomUUID } from 'node:crypto'
 import User from '#models/user'
 import LearnCourse from '#models/Learn/course'
@@ -45,6 +45,9 @@ export default class LearnCourseQuestion extends BaseModel {
   declare loses: number
 
   @column()
+  declare difficulty: number
+
+  @column()
   declare rank: number
 
   @column.dateTime({ autoCreate: true })
@@ -53,13 +56,18 @@ export default class LearnCourseQuestion extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  @column()
-  declare difficulty: number
-
   @beforeCreate()
   static assignUuid(question: LearnCourseQuestion) {
     if (!question.id) {
       question.id = randomUUID()
+    }
+  }
+
+  @beforeSave()
+  static async updateDifficulty(question: LearnCourseQuestion) {
+    if (question.$dirty.wons || question.$dirty.loses) {
+      const total = question.wons + question.loses
+      question.difficulty = total ? Math.round((question.wons / total) * 100) / 100 : 0
     }
   }
 
