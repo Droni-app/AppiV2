@@ -25,7 +25,7 @@ export default class LearnSeeder {
       picture: null,
       video: null,
       open: true,
-      ranking: 4.5,
+      rank: 4.5,
     })
 
     // Crear lecciones para el curso

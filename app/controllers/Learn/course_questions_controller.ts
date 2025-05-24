@@ -1,40 +1,45 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import LearnLesson from '#models/Learn/lesson'
+import LearnCourseQuestion from '#models/Learn/course_question'
 import LearnCourse from '#models/Learn/course'
 
-export default class LearnCourseLessonsController {
+export default class LearnCourseQuestionsController {
   public async index({ request, response, site, params }: HttpContext) {
     const page = request.input('page', 1)
     const perPage = request.input('perPage', 10)
     const q = request.input('q')
+
+    // Obtener el curso por slug
     const course = await LearnCourse.query()
       .where('site_id', site.id)
       .where('slug', params.learn_course_id)
       .firstOrFail()
 
-    const lessons = await LearnLesson.query()
-      .where('learn_course_id', course.id)
+    // Obtener las preguntas para este curso
+    const questions = await LearnCourseQuestion.query()
+      .where('course_id', course.id)
       .if(q, (qB) => {
-        qB.whereILike('name', `%${q}%`).orWhereILike('description', `%${q}%`)
+        qB.whereILike('name', `%${q}%`).orWhereILike('question', `%${q}%`)
       })
-      .where('active', true)
-      .orderBy('position', 'asc')
+      .orderBy('rank', 'desc')
       .paginate(page, perPage)
 
-    return response.ok(lessons)
+    return response.ok(questions)
   }
 
   public async show({ params, response, site }: HttpContext) {
+    // Obtener el curso por slug
     const course = await LearnCourse.query()
       .where('site_id', site.id)
       .where('slug', params.learn_course_id)
       .firstOrFail()
-    const lesson = await LearnLesson.query()
-      .where('slug', params.id)
-      .where('learn_course_id', course.id)
-      .where('active', true)
-      .preload('learnCourse')
+
+    // Obtener la pregunta específica por su ID
+    const question = await LearnCourseQuestion.query()
+      .where('id', params.id)
+      .where('course_id', course.id)
+      .preload('course')
       .firstOrFail()
-    return response.ok(lesson)
+
+    return response.ok(question)
   }
 }

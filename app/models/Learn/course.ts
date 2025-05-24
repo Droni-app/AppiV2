@@ -42,7 +42,7 @@ export default class LearnCourse extends BaseModel {
   declare open: boolean
 
   @column()
-  declare ranking: number
+  declare rank: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

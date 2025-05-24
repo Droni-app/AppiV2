@@ -14,6 +14,8 @@ const ContentAttachmentsController = () => import('#controllers/Content/attachme
 const SocialCommentsController = () => import('#controllers/Social/comments_controller')
 const LearnCoursesController = () => import('#controllers/Learn/courses_controller')
 const LearnCourseLessonsController = () => import('#controllers/Learn/course_lessons_controller')
+const LearnCourseQuestionsController = () =>
+  import('#controllers/Learn/course_questions_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -41,6 +43,9 @@ router
     // Learn Module
     router.resource('learn/courses', LearnCoursesController).only(['index', 'show'])
     router.resource('learn/courses.lessons', LearnCourseLessonsController).only(['index', 'show'])
+    router
+      .resource('learn/courses.questions', LearnCourseQuestionsController)
+      .only(['index', 'show'])
   })
   .use([middleware.site()])
 
@@ -72,6 +77,8 @@ const BackSocialCommentsController = () => import('#controllers/Back/Social/comm
 const BackLearnCoursesController = () => import('#controllers/Back/Learn/courses_controller')
 const BackLearnCourseLessonsController = () =>
   import('#controllers/Back/Learn/course_lessons_controller')
+const BackLearnCourseQuestionsController = () =>
+  import('#controllers/Back/Learn/course_questions_controller')
 
 router
   .group(() => {
@@ -92,5 +99,6 @@ router
     // Learn Module
     router.resource('back/learn/courses', BackLearnCoursesController).apiOnly()
     router.resource('back/learn/courses.lessons', BackLearnCourseLessonsController).apiOnly()
+    router.resource('back/learn/courses.questions', BackLearnCourseQuestionsController).apiOnly()
   })
   .use([middleware.auth(), middleware.admin_site()])

@@ -17,7 +17,7 @@ export default class extends BaseSchema {
       table.string('video').nullable()
       table.text('description').nullable()
       table.boolean('open').notNullable().defaultTo(true)
-      table.decimal('ranking', 3, 2).notNullable().defaultTo(0)
+      table.decimal('rank', 3, 2).notNullable().defaultTo(0)
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
