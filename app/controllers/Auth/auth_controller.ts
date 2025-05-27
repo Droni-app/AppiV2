@@ -5,6 +5,11 @@ import Site from '#models/site'
 import Enrollment from '#models/enrollment'
 
 export default class AuthController {
+  /**
+   * @register
+   * @requestBody <registerValidator>
+   * @responseBody 200 - <User>
+   */
   async register({ request, response }: HttpContext) {
     const data = await request.validateUsing(registerValidator)
     const user = await User.create({
@@ -14,7 +19,11 @@ export default class AuthController {
     })
     return response.created(user)
   }
-
+  /**
+   * @login
+   * @requestBody <loginValidator>
+   * @responseBody 200 - { user: {}, token: "string" }
+   */
   async login({ request }: HttpContext) {
     const { email, password, siteId } = await request.validateUsing(loginValidator)
 
