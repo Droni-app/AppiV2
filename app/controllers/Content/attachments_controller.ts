@@ -7,7 +7,12 @@ import db from '@adonisjs/lucid/services/db'
 
 export default class AttachmentsController {
   /**
-   * Lista todos los archivos adjuntos del sitio con paginación y búsqueda
+   * @index
+   * @paramQuery <page> - Page number for pagination - @type(number)
+   * @paramQuery <perPage> - Number of items per page - @type(number)
+   * @paramQuery <q> - Search query for attachment names - @type(string)
+   * @responseBody 200 - <ContentAttachment[]>.paginated()
+   * @tag Content Attachments
    */
   public async index({ request, response, auth, site }: HttpContext) {
     const page = request.input('page', 1)
@@ -27,9 +32,11 @@ export default class AttachmentsController {
 
     return response.ok(attachments)
   }
-
   /**
-   * Sube un nuevo archivo adjunto
+   * @store
+   * @requestFormDataBody {"name":{"type":"string"},"file":{"type":"string","format":"binary"}}
+   * @responseBody 201 - <ContentAttachment>
+   * @tag Content Attachments
    */
   public async store({ request, response, auth, site }: HttpContext) {
     // Validar nombre si se proporciona
@@ -64,9 +71,10 @@ export default class AttachmentsController {
 
     return response.created(attachment)
   }
-
   /**
-   * Elimina un archivo adjunto
+   * @destroy
+   * @responseBody 204 - No Content
+   * @tag Content Attachments
    */
   public async destroy({ params, response, auth, site }: HttpContext) {
     const attachment = await ContentAttachment.query()

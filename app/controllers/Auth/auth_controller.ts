@@ -9,6 +9,7 @@ export default class AuthController {
    * @register
    * @requestBody <registerValidator>
    * @responseBody 200 - <User>
+   * @tag Auth
    */
   async register({ request, response }: HttpContext) {
     const data = await request.validateUsing(registerValidator)
@@ -23,6 +24,7 @@ export default class AuthController {
    * @login
    * @requestBody <loginValidator>
    * @responseBody 200 - { user: {}, token: "string" }
+   * @tag Auth
    */
   async login({ request }: HttpContext) {
     const { email, password, siteId } = await request.validateUsing(loginValidator)
@@ -46,13 +48,21 @@ export default class AuthController {
       token,
     }
   }
-
+  /**
+   * @me
+   * @responseBody 200 - <User>
+   * @tag Auth
+   */
   async me({ auth }: HttpContext) {
     return {
       user: auth.user,
     }
   }
-
+  /**
+   * @logout
+   * @responseBody 200 - <User>
+   * @tag Auth
+   */
   async logout({ auth }: HttpContext) {
     await auth.use('api').invalidateToken()
     return {
