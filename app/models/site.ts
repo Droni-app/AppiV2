@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, beforeCreate } from '@adonisjs/lucid/orm'
+import { BaseModel, column, beforeCreate, hasMany } from '@adonisjs/lucid/orm'
 import { randomUUID } from 'node:crypto'
+import Enrollment from './enrollment.js'
 
 export default class Site extends BaseModel {
   @column({ isPrimary: true })
@@ -45,4 +46,7 @@ export default class Site extends BaseModel {
       site.id = randomUUID()
     }
   }
+
+  @hasMany(() => Enrollment)
+  declare enrollments: any
 }

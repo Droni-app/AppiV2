@@ -10,6 +10,7 @@ export default class AuthController {
    * @requestBody <registerValidator>
    * @responseBody 200 - <User>
    * @tag Auth
+   * @description Register a new user.
    */
   async register({ request, response }: HttpContext) {
     const data = await request.validateUsing(registerValidator)
@@ -25,6 +26,7 @@ export default class AuthController {
    * @requestBody <loginValidator>
    * @responseBody 200 - { user: {}, token: "string" }
    * @tag Auth
+   * @description Login a user and create an enrollment if siteId is provided.
    */
   async login({ request }: HttpContext) {
     const { email, password, siteId } = await request.validateUsing(loginValidator)
@@ -52,6 +54,7 @@ export default class AuthController {
    * @me
    * @responseBody 200 - <User>
    * @tag Auth
+   * @description Get the authenticated user's information.
    */
   async me({ auth }: HttpContext) {
     return {
@@ -62,6 +65,7 @@ export default class AuthController {
    * @logout
    * @responseBody 200 - <User>
    * @tag Auth
+   * @description Logout the authenticated user by invalidating their token.
    */
   async logout({ auth }: HttpContext) {
     await auth.use('api').invalidateToken()

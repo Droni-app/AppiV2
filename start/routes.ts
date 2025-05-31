@@ -69,6 +69,7 @@ router
 | Back Module
 |--------------------------------------------------------------------------
 */
+const BackSiteController = () => import('#controllers/Back/sites_controller')
 const BackContentCategoryController = () =>
   import('#controllers/Back/Content/categories_controller')
 const BackContentPostController = () => import('#controllers/Back/Content/posts_controller')
@@ -85,26 +86,33 @@ const BackLearnCourseQuestionsController = () =>
 
 router
   .group(() => {
-    // Content Module
-    router.resource('back/content/categories', BackContentCategoryController).apiOnly()
-    router.resource('back/content/posts', BackContentPostController).apiOnly()
+    router.resource('back/sites', BackSiteController).apiOnly()
     router
-      .resource('back/content/posts.attrs', BackPostContentAttrsController)
-      .only(['store', 'destroy'])
-    router
-      .resource('back/content/attachments', BackContentAttachmentsController)
-      .apiOnly()
-      .except(['show', 'update'])
-    // Social Module
-    router
-      .resource('back/social/comments', BackSocialCommentsController)
-      .only(['index', 'update', 'destroy'])
-    // Learn Module
-    router.resource('back/learn/courses', BackLearnCoursesController).apiOnly()
-    router.resource('back/learn/courses.lessons', BackLearnCourseLessonsController).apiOnly()
-    router.resource('back/learn/courses.questions', BackLearnCourseQuestionsController).apiOnly()
+      .group(() => {
+        // Content Module
+        router.resource('back/content/categories', BackContentCategoryController).apiOnly()
+        router.resource('back/content/posts', BackContentPostController).apiOnly()
+        router
+          .resource('back/content/posts.attrs', BackPostContentAttrsController)
+          .only(['store', 'destroy'])
+        router
+          .resource('back/content/attachments', BackContentAttachmentsController)
+          .apiOnly()
+          .except(['show', 'update'])
+        // Social Module
+        router
+          .resource('back/social/comments', BackSocialCommentsController)
+          .only(['index', 'update', 'destroy'])
+        // Learn Module
+        router.resource('back/learn/courses', BackLearnCoursesController).apiOnly()
+        router.resource('back/learn/courses.lessons', BackLearnCourseLessonsController).apiOnly()
+        router
+          .resource('back/learn/courses.questions', BackLearnCourseQuestionsController)
+          .apiOnly()
+      })
+      .use(middleware.admin_site())
   })
-  .use([middleware.auth(), middleware.admin_site()])
+  .use(middleware.auth())
 
 // Swagger documentation
 // returns swagger in YAML
