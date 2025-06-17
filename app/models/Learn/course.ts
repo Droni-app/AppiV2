@@ -3,7 +3,7 @@ import { BaseModel, column, beforeCreate, belongsTo, hasMany } from '@adonisjs/l
 import { randomUUID } from 'node:crypto'
 import Site from '#models/site'
 import User from '#models/user'
-import LearnLesson from '#models/Learn/lesson'
+import LearnCourseLesson from '#models/Learn/course_lesson'
 
 export default class LearnCourse extends BaseModel {
   public static table = 'learn_courses'
@@ -57,7 +57,7 @@ export default class LearnCourse extends BaseModel {
     }
   }
 
-  @hasMany(() => LearnLesson, {
+  @hasMany(() => LearnCourseLesson, {
     foreignKey: 'learnCourseId',
     onQuery: (query) => query.orderBy('position', 'asc'),
   })

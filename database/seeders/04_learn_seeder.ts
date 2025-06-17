@@ -1,5 +1,5 @@
 import LearnCourse from '#models/Learn/course'
-import LearnLesson from '#models/Learn/lesson'
+import LearnCourseLesson from '#models/Learn/course_lesson'
 import Site from '#models/site'
 import User from '#models/user'
 
@@ -29,7 +29,7 @@ export default class LearnSeeder {
     })
 
     // Crear lecciones para el curso
-    await LearnLesson.createMany([
+    await LearnCourseLesson.createMany([
       {
         learnCourseId: course.id,
         position: 1,

@@ -3,7 +3,7 @@ import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
 import LearnCourse from '#models/Learn/course'
 import { randomUUID } from 'node:crypto'
 
-export default class LearnLesson extends BaseModel {
+export default class LearnCourseLesson extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
 
@@ -50,7 +50,7 @@ export default class LearnLesson extends BaseModel {
   declare updatedAt: DateTime
 
   @beforeCreate()
-  static assignUuid(lesson: LearnLesson) {
+  static assignUuid(lesson: LearnCourseLesson) {
     if (!lesson.id) {
       lesson.id = randomUUID()
     }

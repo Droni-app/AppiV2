@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import LearnLesson from '#models/Learn/lesson'
+import LearnLesson from '#models/Learn/course_lesson'
 import LearnCourse from '#models/Learn/course'
 
 export default class LearnCourseLessonsController {

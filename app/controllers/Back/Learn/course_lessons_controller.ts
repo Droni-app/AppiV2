@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import LearnLesson from '#models/Learn/lesson'
+import LearnLesson from '#models/Learn/course_lesson'
 import { BackLearnLessonValidator } from '#validators/Back/Learn/lesson_validator'
 import LearnCourse from '#models/Learn/course'
 import string from '@adonisjs/core/helpers/string'
