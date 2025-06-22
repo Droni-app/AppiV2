@@ -27,11 +27,7 @@ export default class CommentsController {
     if (payload.commentableType === 'ContentPost') {
       const ContentPostModule = await import('#models/Content/post')
       const ContentPost = ContentPostModule.default
-      exists = !!(await ContentPost.query()
-        .where('id', payload.commentableId)
-        .where('site_id', site.id)
-        .where('active', true)
-        .first())
+      exists = !!(await ContentPost.query().where('id', payload.commentableId).where('site_id', site.id).where('active', true).first())
     }
     if (!exists) {
       return response.notFound({ message: 'El objeto a comentar no existe' })

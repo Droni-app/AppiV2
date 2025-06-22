@@ -53,10 +53,7 @@ export default class AttachmentsController {
    * Elimina un archivo adjunto
    */
   public async destroy({ params, response, site }: HttpContext) {
-    const attachment = await ContentAttachment.query()
-      .where('id', params.id)
-      .where('site_id', site.id)
-      .firstOrFail()
+    const attachment = await ContentAttachment.query().where('id', params.id).where('site_id', site.id).firstOrFail()
 
     // Eliminar el archivo físico
     const disk = drive.use()

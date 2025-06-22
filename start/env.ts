@@ -39,5 +39,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   SPACES_SECRET: Env.schema.string(),
   SPACES_REGION: Env.schema.string(),
   SPACES_BUCKET: Env.schema.string(),
-  SPACES_ENDPOINT: Env.schema.string()
+  SPACES_ENDPOINT: Env.schema.string(),
 })

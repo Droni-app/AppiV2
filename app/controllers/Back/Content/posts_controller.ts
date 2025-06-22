@@ -52,10 +52,7 @@ export default class PostsController {
   }
 
   async update({ params, request, response, site }: HttpContext) {
-    const post = await ContentPost.query()
-      .where('site_id', site.id)
-      .where('id', params.id)
-      .firstOrFail()
+    const post = await ContentPost.query().where('site_id', site.id).where('id', params.id).firstOrFail()
     const payload = await request.validateUsing(updatePostValidator)
     // Do not update slug on update
     post.merge(payload)
@@ -64,10 +61,7 @@ export default class PostsController {
   }
 
   async destroy({ params, response, site }: HttpContext) {
-    const post = await ContentPost.query()
-      .where('site_id', site.id)
-      .where('id', params.id)
-      .firstOrFail()
+    const post = await ContentPost.query().where('site_id', site.id).where('id', params.id).firstOrFail()
     await post.delete()
     return response.noContent()
   }

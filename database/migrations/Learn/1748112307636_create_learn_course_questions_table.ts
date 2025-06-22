@@ -7,12 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
       table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE')
-      table
-        .uuid('course_id')
-        .notNullable()
-        .references('id')
-        .inTable('learn_courses')
-        .onDelete('CASCADE')
+      table.uuid('course_id').notNullable().references('id').inTable('learn_courses').onDelete('CASCADE')
       table.string('name').notNullable()
       table.text('question').nullable()
       table.string('answer_1').notNullable()

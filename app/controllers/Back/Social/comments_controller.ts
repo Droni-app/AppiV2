@@ -16,10 +16,7 @@ export default class CommentsController {
   }
 
   async update({ params, request, response, site }: HttpContext) {
-    const comment = await SocialComment.query()
-      .where('site_id', site.id)
-      .where('id', params.id)
-      .firstOrFail()
+    const comment = await SocialComment.query().where('site_id', site.id).where('id', params.id).firstOrFail()
     const payload = await request.validateUsing(createCommentValidator)
     comment.merge(payload)
     await comment.save()
@@ -27,10 +24,7 @@ export default class CommentsController {
   }
 
   async destroy({ params, response, site }: HttpContext) {
-    const comment = await SocialComment.query()
-      .where('site_id', site.id)
-      .where('id', params.id)
-      .firstOrFail()
+    const comment = await SocialComment.query().where('site_id', site.id).where('id', params.id).firstOrFail()
     await comment.delete()
     return response.noContent()
   }

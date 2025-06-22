@@ -7,10 +7,7 @@ export default class LearnCourseLessonsController {
     const page = request.input('page', 1)
     const perPage = request.input('perPage', 10)
     const q = request.input('q')
-    const course = await LearnCourse.query()
-      .where('site_id', site.id)
-      .where('slug', params.learn_course_id)
-      .firstOrFail()
+    const course = await LearnCourse.query().where('site_id', site.id).where('slug', params.learn_course_id).firstOrFail()
 
     const lessons = await LearnLesson.query()
       .where('learn_course_id', course.id)
@@ -25,10 +22,7 @@ export default class LearnCourseLessonsController {
   }
 
   public async show({ params, response, site }: HttpContext) {
-    const course = await LearnCourse.query()
-      .where('site_id', site.id)
-      .where('slug', params.learn_course_id)
-      .firstOrFail()
+    const course = await LearnCourse.query().where('site_id', site.id).where('slug', params.learn_course_id).firstOrFail()
     const lesson = await LearnLesson.query()
       .where('slug', params.id)
       .where('learn_course_id', course.id)

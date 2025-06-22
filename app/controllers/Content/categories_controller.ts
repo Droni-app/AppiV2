@@ -10,10 +10,7 @@ export default class CategoriesController {
   }
 
   async show({ params, response, site }: HttpContext) {
-    const category = await ContentCategory.query()
-      .where('site_id', site.id)
-      .where('slug', params.id)
-      .firstOrFail()
+    const category = await ContentCategory.query().where('site_id', site.id).where('slug', params.id).firstOrFail()
     return response.ok(category)
   }
 }

@@ -70,5 +70,7 @@
       "./app/middleware/*.ts"
     ]
   },
-  "prettier": "@adonisjs/prettier-config"
+  "eslintConfig": {
+    "extends": "@adonisjs/eslint-config/app"
+  }
 }

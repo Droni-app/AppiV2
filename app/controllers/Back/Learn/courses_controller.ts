@@ -25,25 +25,15 @@ export default class BackLearnCoursesController {
   }
 
   public async show({ params, response, site }: HttpContext) {
-    const course = await LearnCourse.query()
-      .where('id', params.id)
-      .where('site_id', site.id)
-      .preload('user')
-      .preload('learnLessons')
-      .firstOrFail()
+    const course = await LearnCourse.query().where('id', params.id).where('site_id', site.id).preload('user').preload('learnLessons').firstOrFail()
     return response.ok(course)
   }
 
   public async store({ request, response, site, auth }: HttpContext) {
     const data = await request.validateUsing(BackLearnCourseValidator)
     // Generar slug único por site igual que en categorías
-    const exists = await LearnCourse.query()
-      .where('site_id', site.id)
-      .where('slug', string.slug(data.name).toLowerCase())
-      .first()
-    const slug = exists
-      ? `${string.slug(data.name).toLowerCase()}-${Date.now()}`
-      : string.slug(data.name).toLowerCase()
+    const exists = await LearnCourse.query().where('site_id', site.id).where('slug', string.slug(data.name).toLowerCase()).first()
+    const slug = exists ? `${string.slug(data.name).toLowerCase()}-${Date.now()}` : string.slug(data.name).toLowerCase()
     const course = await LearnCourse.create({
       ...data,
       siteId: site.id,
@@ -54,10 +44,7 @@ export default class BackLearnCoursesController {
   }
 
   public async update({ params, request, response, site }: HttpContext) {
-    const course = await LearnCourse.query()
-      .where('id', params.id)
-      .where('site_id', site.id)
-      .firstOrFail()
+    const course = await LearnCourse.query().where('id', params.id).where('site_id', site.id).firstOrFail()
     const data = await request.validateUsing(BackLearnCourseValidator)
     // Ensure userId is string or undefined (not null)
     const sanitizedData = {
@@ -70,10 +57,7 @@ export default class BackLearnCoursesController {
   }
 
   public async destroy({ params, response, site }: HttpContext) {
-    const course = await LearnCourse.query()
-      .where('id', params.id)
-      .where('site_id', site.id)
-      .firstOrFail()
+    const course = await LearnCourse.query().where('id', params.id).where('site_id', site.id).firstOrFail()
     await course.delete()
     return response.noContent()
   }

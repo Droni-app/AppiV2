@@ -1,9 +1,8 @@
 import { configApp } from '@adonisjs/eslint-config'
 export default [
-  ...configApp(),
-  {
+  ...configApp({
     rules: {
-      'max-len': ['warn', { code: 150, ignoreStrings: true, ignoreTemplateLiterals: true }],
+      'prettier/prettier': ['error', { printWidth: 150 }],
     },
-  },
+  }),
 ]

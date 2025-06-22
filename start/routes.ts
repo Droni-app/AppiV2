@@ -17,8 +17,7 @@ const ContentAttachmentsController = () => import('#controllers/Content/attachme
 const SocialCommentsController = () => import('#controllers/Social/comments_controller')
 const LearnCoursesController = () => import('#controllers/Learn/courses_controller')
 const LearnCourseLessonsController = () => import('#controllers/Learn/course_lessons_controller')
-const LearnCourseQuestionsController = () =>
-  import('#controllers/Learn/course_questions_controller')
+const LearnCourseQuestionsController = () => import('#controllers/Learn/course_questions_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -46,9 +45,7 @@ router
     // Learn Module
     router.resource('learn/courses', LearnCoursesController).only(['index', 'show'])
     router.resource('learn/courses.lessons', LearnCourseLessonsController).only(['index', 'show'])
-    router
-      .resource('learn/courses.questions', LearnCourseQuestionsController)
-      .only(['index', 'show'])
+    router.resource('learn/courses.questions', LearnCourseQuestionsController).only(['index', 'show'])
   })
   .use([middleware.site()])
 
@@ -56,9 +53,7 @@ router
 router
   .group(() => {
     // Content Module
-    router
-      .resource('content/attachments', ContentAttachmentsController)
-      .only(['index', 'store', 'destroy'])
+    router.resource('content/attachments', ContentAttachmentsController).only(['index', 'store', 'destroy'])
     // Social Module
     router.resource('social/comments', SocialCommentsController).only(['store'])
   })
@@ -70,19 +65,14 @@ router
 |--------------------------------------------------------------------------
 */
 const BackSiteController = () => import('#controllers/Back/sites_controller')
-const BackContentCategoryController = () =>
-  import('#controllers/Back/Content/categories_controller')
+const BackContentCategoryController = () => import('#controllers/Back/Content/categories_controller')
 const BackContentPostController = () => import('#controllers/Back/Content/posts_controller')
-const BackPostContentAttrsController = () =>
-  import('#controllers/Back/Content/post_attrs_controller')
-const BackContentAttachmentsController = () =>
-  import('#controllers/Back/Content/attachments_controller')
+const BackPostContentAttrsController = () => import('#controllers/Back/Content/post_attrs_controller')
+const BackContentAttachmentsController = () => import('#controllers/Back/Content/attachments_controller')
 const BackSocialCommentsController = () => import('#controllers/Back/Social/comments_controller')
 const BackLearnCoursesController = () => import('#controllers/Back/Learn/courses_controller')
-const BackLearnCourseLessonsController = () =>
-  import('#controllers/Back/Learn/course_lessons_controller')
-const BackLearnCourseQuestionsController = () =>
-  import('#controllers/Back/Learn/course_questions_controller')
+const BackLearnCourseLessonsController = () => import('#controllers/Back/Learn/course_lessons_controller')
+const BackLearnCourseQuestionsController = () => import('#controllers/Back/Learn/course_questions_controller')
 
 router
   .group(() => {
@@ -92,23 +82,14 @@ router
         // Content Module
         router.resource('back/content/categories', BackContentCategoryController).apiOnly()
         router.resource('back/content/posts', BackContentPostController).apiOnly()
-        router
-          .resource('back/content/posts.attrs', BackPostContentAttrsController)
-          .only(['store', 'destroy'])
-        router
-          .resource('back/content/attachments', BackContentAttachmentsController)
-          .apiOnly()
-          .except(['show', 'update'])
+        router.resource('back/content/posts.attrs', BackPostContentAttrsController).only(['store', 'destroy'])
+        router.resource('back/content/attachments', BackContentAttachmentsController).apiOnly().except(['show', 'update'])
         // Social Module
-        router
-          .resource('back/social/comments', BackSocialCommentsController)
-          .only(['index', 'update', 'destroy'])
+        router.resource('back/social/comments', BackSocialCommentsController).only(['index', 'update', 'destroy'])
         // Learn Module
         router.resource('back/learn/courses', BackLearnCoursesController).apiOnly()
         router.resource('back/learn/courses.lessons', BackLearnCourseLessonsController).apiOnly()
-        router
-          .resource('back/learn/courses.questions', BackLearnCourseQuestionsController)
-          .apiOnly()
+        router.resource('back/learn/courses.questions', BackLearnCourseQuestionsController).apiOnly()
       })
       .use(middleware.admin_site())
   })

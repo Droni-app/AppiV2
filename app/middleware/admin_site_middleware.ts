@@ -13,12 +13,7 @@ export default class SiteMiddleware {
     if (!key || !secret || !user) {
       throw new Error('Key, secret and user are required')
     }
-    const enrollment = await Enrollment.query()
-      .where('site_id', key)
-      .where('user_id', user.id)
-      .where('role', 'admin')
-      .preload('site')
-      .first()
+    const enrollment = await Enrollment.query().where('site_id', key).where('user_id', user.id).where('role', 'admin').preload('site').first()
     if (!enrollment) {
       throw new Error('You are not authorized to access this site')
     }

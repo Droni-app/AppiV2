@@ -8,12 +8,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary()
       table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE')
       table.uuid('site_id').notNullable().references('id').inTable('sites').onDelete('CASCADE')
-      table
-        .uuid('content_category_id')
-        .nullable()
-        .references('id')
-        .inTable('content_categories')
-        .onDelete('CASCADE')
+      table.uuid('content_category_id').nullable().references('id').inTable('content_categories').onDelete('CASCADE')
       table.string('slug').notNullable()
       table.unique(['site_id', 'slug'])
       table.string('name').notNullable()

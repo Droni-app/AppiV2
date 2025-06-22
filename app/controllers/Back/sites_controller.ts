@@ -74,10 +74,7 @@ export default class SitesController {
 
     // Si se está actualizando el dominio, verificar que no exista
     if (payload.domain && payload.domain !== site.domain) {
-      const existingSite = await Site.query()
-        .where('domain', payload.domain)
-        .where('id', '!=', site.id)
-        .first()
+      const existingSite = await Site.query().where('domain', payload.domain).where('id', '!=', site.id).first()
 
       if (existingSite) {
         return response.conflict({

@@ -1,10 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ContentCategory from '#models/Content/category'
 import Site from '#models/site'
-import {
-  createCategoryValidator,
-  updateCategoryValidator,
-} from '#validators/Back/Content/category_validator'
+import { createCategoryValidator, updateCategoryValidator } from '#validators/Back/Content/category_validator'
 import string from '@adonisjs/core/helpers/string'
 
 export default class CategoriesController {
@@ -24,13 +21,8 @@ export default class CategoriesController {
   async store({ request, response, site }: HttpContext & { site: Site }) {
     const data = await request.validateUsing(createCategoryValidator)
     // Validar unicidad de slug por site
-    const exists = await ContentCategory.query()
-      .where('site_id', site.id)
-      .where('slug', string.slug(data.name).toLocaleLowerCase())
-      .first()
-    const slug = exists
-      ? `${string.slug(data.name).toLocaleLowerCase()}-${Date.now()}`
-      : string.slug(data.name).toLocaleLowerCase()
+    const exists = await ContentCategory.query().where('site_id', site.id).where('slug', string.slug(data.name).toLocaleLowerCase()).first()
+    const slug = exists ? `${string.slug(data.name).toLocaleLowerCase()}-${Date.now()}` : string.slug(data.name).toLocaleLowerCase()
     const category = await ContentCategory.create({
       ...data,
       siteId: site.id,
@@ -43,10 +35,7 @@ export default class CategoriesController {
    * Mostrar una categoría individual del sitio
    */
   async show({ params, response, site }: HttpContext & { site: Site }) {
-    const category = await ContentCategory.query()
-      .where('site_id', site.id)
-      .where('id', params.id)
-      .firstOrFail()
+    const category = await ContentCategory.query().where('site_id', site.id).where('id', params.id).firstOrFail()
     return response.ok(category)
   }
 
@@ -54,10 +43,7 @@ export default class CategoriesController {
    * Actualizar una categoría del sitio
    */
   async update({ params, request, response, site }: HttpContext & { site: Site }) {
-    const category = await ContentCategory.query()
-      .where('site_id', site.id)
-      .where('id', params.id)
-      .firstOrFail()
+    const category = await ContentCategory.query().where('site_id', site.id).where('id', params.id).firstOrFail()
     const data = await request.validateUsing(updateCategoryValidator)
     category.merge(data)
     await category.save()
@@ -68,10 +54,7 @@ export default class CategoriesController {
    * Eliminar una categoría del sitio
    */
   async destroy({ params, response, site }: HttpContext & { site: Site }) {
-    const category = await ContentCategory.query()
-      .where('site_id', site.id)
-      .where('id', params.id)
-      .firstOrFail()
+    const category = await ContentCategory.query().where('site_id', site.id).where('id', params.id).firstOrFail()
     await category.delete()
     return response.noContent()
   }
