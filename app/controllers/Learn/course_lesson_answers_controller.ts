@@ -6,20 +6,17 @@ export default class LearnCourseLessonAnswersController {
   /**
    * Display a list of resource
    */
-  async index({request, response, site, params}: HttpContext) {
-    // const course = await LearnCourse.query()
-    //       .where('site_id', site.id)
-    //       .where('slug', params.learn_course_id)
-    //       .firstOrFail()
+  async index({ request, response, site, params }: HttpContext) {
+    const course = await LearnCourse.query().where('site_id', site.id).where('slug', params.course_id).firstOrFail()
 
-    // const lesson = LearnCourseLesson.query()
-    //       .where('slug', params.learn_course_lesson_id)
-    //       .where('learn_course_id', course.id)
-    //       .where('active', true)
-    //       .preload('learnCourse')
-    //       .firstOrFail()
+    const lesson = await LearnCourseLesson.query()
+      .where('slug', params.lesson_id)
+      .where('learn_course_id', course.id)
+      .where('active', true)
+      .preload('learnCourse')
+      .firstOrFail()
 
-    return { params }
+    return { params, course, lesson }
   }
 
   /**

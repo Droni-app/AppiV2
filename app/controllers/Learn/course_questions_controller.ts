@@ -9,10 +9,7 @@ export default class LearnCourseQuestionsController {
     const q = request.input('q')
 
     // Obtener el curso por slug
-    const course = await LearnCourse.query()
-      .where('site_id', site.id)
-      .where('slug', params.learn_course_id)
-      .firstOrFail()
+    const course = await LearnCourse.query().where('site_id', site.id).where('slug', params.course_id).firstOrFail()
 
     // Obtener las preguntas para este curso
     const questions = await LearnCourseQuestion.query()
@@ -28,10 +25,7 @@ export default class LearnCourseQuestionsController {
 
   public async show({ params, response, site }: HttpContext) {
     // Obtener el curso por slug
-    const course = await LearnCourse.query()
-      .where('site_id', site.id)
-      .where('slug', params.learn_course_id)
-      .firstOrFail()
+    const course = await LearnCourse.query().where('site_id', site.id).where('slug', params.course_id).firstOrFail()
 
     // Obtener la pregunta específica por su ID
     const question = await LearnCourseQuestion.query()
