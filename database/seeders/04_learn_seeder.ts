@@ -1,5 +1,6 @@
 import LearnCourse from '#models/Learn/course'
 import LearnCourseLesson from '#models/Learn/course_lesson'
+import LearnCourseLessonAnswer from '#models/Learn/course_lesson_answer'
 import Site from '#models/site'
 import User from '#models/user'
 
@@ -29,7 +30,7 @@ export default class LearnSeeder {
     })
 
     // Crear lecciones para el curso
-    await LearnCourseLesson.createMany([
+    const lessons = await LearnCourseLesson.createMany([
       {
         learnCourseId: course.id,
         position: 1,
@@ -57,6 +58,15 @@ export default class LearnSeeder {
         live: null,
         liveDate: null,
         limitDate: null,
+      },
+    ])
+    // Crear respuestas de lecciones
+    await LearnCourseLessonAnswer.createMany([
+      {
+        userId: user.id,
+        learnCourseLessonId: lessons[0].id,
+        answer: 'Esta es una respuesta de prueba para la lección 1',
+        active: true,
       },
     ])
   }

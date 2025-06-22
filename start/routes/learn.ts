@@ -12,6 +12,7 @@ router
     router.resource('courses', LearnCoursesController).only(['index', 'show'])
     router.resource('courses.lessons', LearnCourseLessonsController).only(['index', 'show'])
     router.resource('courses.questions', LearnCourseQuestionsController).only(['index', 'show'])
+    router.resource('courses.lessons.answers', LearnCourseLessonAnswersController).only(['index', 'show'])
   })
   .use([middleware.site()])
   .prefix('learn')
@@ -19,7 +20,7 @@ router
 // Private routes
 router
   .group(() => {
-    router.resource('courses.lessons.answers', LearnCourseLessonAnswersController).apiOnly()
+    router.resource('courses.lessons.answers', LearnCourseLessonAnswersController).only(['store'])
   })
   .use([middleware.auth(), middleware.site()])
   .prefix('learn')
