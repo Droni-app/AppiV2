@@ -21,8 +21,13 @@ export default class CategoriesController {
   async store({ request, response, site }: HttpContext & { site: Site }) {
     const data = await request.validateUsing(createCategoryValidator)
     // Validar unicidad de slug por site
-    const exists = await ContentCategory.query().where('site_id', site.id).where('slug', string.slug(data.name).toLocaleLowerCase()).first()
-    const slug = exists ? `${string.slug(data.name).toLocaleLowerCase()}-${Date.now()}` : string.slug(data.name).toLocaleLowerCase()
+    const exists = await ContentCategory.query()
+      .where('site_id', site.id)
+      .where('slug', string.slug(data.name).toLocaleLowerCase())
+      .first()
+    const slug = exists
+      ? `${string.slug(data.name).toLocaleLowerCase()}-${Date.now()}`
+      : string.slug(data.name).toLocaleLowerCase()
     const category = await ContentCategory.create({
       ...data,
       siteId: site.id,

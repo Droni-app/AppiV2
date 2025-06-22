@@ -43,7 +43,11 @@ export default class AttachmentsController {
     const payload = await request.validateUsing(createAttachmentValidator)
 
     // validar el limite de almacenamiento para el usuario obteniedo la suma de los archivos
-    const sumSize = await db.from('content_attachments').where('user_id', auth.user!.id).sum('size as totalSize').first()
+    const sumSize = await db
+      .from('content_attachments')
+      .where('user_id', auth.user!.id)
+      .sum('size as totalSize')
+      .first()
 
     if (sumSize.totalSize > Number(process.env.MAX_USER_STORAGE)) {
       throw new Error('Storage limit exceeded')
@@ -73,7 +77,11 @@ export default class AttachmentsController {
    * @tag Content Attachments
    */
   public async destroy({ params, response, auth, site }: HttpContext) {
-    const attachment = await ContentAttachment.query().where('id', params.id).where('site_id', site.id).where('user_id', auth.user!.id).firstOrFail()
+    const attachment = await ContentAttachment.query()
+      .where('id', params.id)
+      .where('site_id', site.id)
+      .where('user_id', auth.user!.id)
+      .firstOrFail()
 
     // Eliminar el archivo físico
     const disk = drive.use()

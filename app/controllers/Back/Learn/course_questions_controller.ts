@@ -8,7 +8,10 @@ export default class BackLearnCourseQuestionController {
     const page = request.input('page', 1)
     const perPage = request.input('perPage', 10)
     const q = request.input('q')
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
 
     const questions = await LearnCourseQuestion.query()
       .where('course_id', course.id)
@@ -22,15 +25,24 @@ export default class BackLearnCourseQuestionController {
   }
 
   public async show({ params, response, site }: HttpContext) {
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
-    const question = await LearnCourseQuestion.query().where('id', params.id).where('course_id', course.id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
+    const question = await LearnCourseQuestion.query()
+      .where('id', params.id)
+      .where('course_id', course.id)
+      .firstOrFail()
 
     return response.ok(question)
   }
 
   public async store({ request, response, site, params, auth }: HttpContext) {
     const data = await request.validateUsing(BackLearnQuestionValidator)
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
 
     const question = await LearnCourseQuestion.create({
       ...data,
@@ -43,8 +55,14 @@ export default class BackLearnCourseQuestionController {
   }
 
   public async update({ params, request, response, site }: HttpContext) {
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
-    const question = await LearnCourseQuestion.query().where('id', params.id).where('course_id', course.id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
+    const question = await LearnCourseQuestion.query()
+      .where('id', params.id)
+      .where('course_id', course.id)
+      .firstOrFail()
     const data = await request.validateUsing(BackLearnQuestionValidator)
     question.merge(data)
     await question.save()
@@ -52,8 +70,14 @@ export default class BackLearnCourseQuestionController {
   }
 
   public async destroy({ params, response, site }: HttpContext) {
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
-    const question = await LearnCourseQuestion.query().where('id', params.id).where('course_id', course.id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
+    const question = await LearnCourseQuestion.query()
+      .where('id', params.id)
+      .where('course_id', course.id)
+      .firstOrFail()
     await question.delete()
     return response.noContent()
   }

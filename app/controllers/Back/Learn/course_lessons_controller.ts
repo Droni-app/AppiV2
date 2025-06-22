@@ -9,7 +9,10 @@ export default class BackLearnCourseLessonsController {
     const page = request.input('page', 1)
     const perPage = request.input('perPage', 10)
     const q = request.input('q')
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
 
     const lessons = await LearnLesson.query()
       .where('learn_course_id', course.id)
@@ -23,14 +26,20 @@ export default class BackLearnCourseLessonsController {
   }
 
   public async show({ params, response, site }: HttpContext) {
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
     const lesson = await LearnLesson.query().where('id', params.id).where('learn_course_id', course.id).firstOrFail()
     return response.ok(lesson)
   }
 
   public async store({ request, response, site, params }: HttpContext) {
     const data = await request.validateUsing(BackLearnLessonValidator)
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
 
     // Check if slug exists
     const baseSlug = string.slug(data.name).toLowerCase()
@@ -38,7 +47,10 @@ export default class BackLearnCourseLessonsController {
 
     // If data.position is null find next position
     if (data.position === null || data.position === undefined) {
-      const lastLesson = await LearnLesson.query().where('learn_course_id', course.id).orderBy('position', 'desc').first()
+      const lastLesson = await LearnLesson.query()
+        .where('learn_course_id', course.id)
+        .orderBy('position', 'desc')
+        .first()
       data.position = lastLesson ? lastLesson.position + 1 : 1
     }
 
@@ -52,7 +64,10 @@ export default class BackLearnCourseLessonsController {
   }
 
   public async update({ params, request, response, site }: HttpContext) {
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
     const lesson = await LearnLesson.query().where('id', params.id).where('learn_course_id', course.id).firstOrFail()
     const data = await request.validateUsing(BackLearnLessonValidator)
     lesson.merge(data)
@@ -61,7 +76,10 @@ export default class BackLearnCourseLessonsController {
   }
 
   public async destroy({ params, response, site }: HttpContext) {
-    const course = await LearnCourse.query().where('site_id', site.id).where('id', params.back_learn_course_id).firstOrFail()
+    const course = await LearnCourse.query()
+      .where('site_id', site.id)
+      .where('id', params.back_learn_course_id)
+      .firstOrFail()
     const lesson = await LearnLesson.query().where('id', params.id).where('learn_course_id', course.id).firstOrFail()
     await lesson.delete()
     return response.noContent()

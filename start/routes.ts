@@ -17,6 +17,7 @@ const ContentAttachmentsController = () => import('#controllers/Content/attachme
 const SocialCommentsController = () => import('#controllers/Social/comments_controller')
 const LearnCoursesController = () => import('#controllers/Learn/courses_controller')
 const LearnCourseLessonsController = () => import('#controllers/Learn/course_lessons_controller')
+const LearnCourseLessonAnswersController = () => import('#controllers/Learn/course_lesson_answers_controller')
 const LearnCourseQuestionsController = () => import('#controllers/Learn/course_questions_controller')
 
 import router from '@adonisjs/core/services/router'
@@ -56,6 +57,8 @@ router
     router.resource('content/attachments', ContentAttachmentsController).only(['index', 'store', 'destroy'])
     // Social Module
     router.resource('social/comments', SocialCommentsController).only(['store'])
+    // Learn Module
+    router.resource('learn/courses.lessons.answers', LearnCourseLessonAnswersController).apiOnly()
   })
   .use([middleware.auth(), middleware.site()])
 
@@ -83,7 +86,10 @@ router
         router.resource('back/content/categories', BackContentCategoryController).apiOnly()
         router.resource('back/content/posts', BackContentPostController).apiOnly()
         router.resource('back/content/posts.attrs', BackPostContentAttrsController).only(['store', 'destroy'])
-        router.resource('back/content/attachments', BackContentAttachmentsController).apiOnly().except(['show', 'update'])
+        router
+          .resource('back/content/attachments', BackContentAttachmentsController)
+          .apiOnly()
+          .except(['show', 'update'])
         // Social Module
         router.resource('back/social/comments', BackSocialCommentsController).only(['index', 'update', 'destroy'])
         // Learn Module
