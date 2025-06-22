@@ -1,4 +1,4 @@
 module.exports = {
   ...require('@adonisjs/prettier-config'),
-  printWidth: 150,
+  printWidth: 120,
 }
