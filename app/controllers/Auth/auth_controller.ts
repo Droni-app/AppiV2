@@ -56,10 +56,9 @@ export default class AuthController {
    * @tag Auth
    * @description Get the authenticated user's information.
    */
-  async me({ auth }: HttpContext) {
-    return {
-      user: auth.user,
-    }
+  async me({ auth, response }: HttpContext) {
+    const user = await User.query().where('id', auth.user!.id).preload('enrollments').firstOrFail()
+    return response.ok(user)
   }
   /**
    * @logout
