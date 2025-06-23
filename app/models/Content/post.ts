@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, beforeCreate, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import { randomUUID } from 'node:crypto'
 import User from '#models/user'
 import Site from '#models/site'
@@ -56,17 +57,17 @@ export default class ContentPost extends BaseModel {
     }
   }
 
-  @belongsTo(() => User, { foreignKey: 'userId' })
-  declare user: any
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 
-  @belongsTo(() => Site, { foreignKey: 'siteId' })
-  declare site: any
+  @belongsTo(() => Site)
+  declare site: BelongsTo<typeof Site>
 
-  @belongsTo(() => ContentCategory, { foreignKey: 'contentCategoryId' })
-  declare contentCategory: any
+  @belongsTo(() => ContentCategory)
+  declare contentCategory: BelongsTo<typeof ContentCategory>
 
-  @hasMany(() => ContentAttr, { foreignKey: 'contentPostId' })
-  declare contentAttrs: any
+  @hasMany(() => ContentAttr)
+  declare contentAttrs: HasMany<typeof ContentAttr>
 
   @hasMany(() => Comment, {
     foreignKey: 'commentableId',
@@ -74,5 +75,5 @@ export default class ContentPost extends BaseModel {
       query.where('commentable_type', 'ContentPost')
     },
   })
-  declare comments: any
+  declare comments: HasMany<typeof Comment>
 }

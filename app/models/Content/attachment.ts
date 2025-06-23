@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, beforeCreate, belongsTo, computed } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { randomUUID } from 'node:crypto'
 import Site from '#models/site'
 import User from '#models/user'
@@ -43,9 +44,9 @@ export default class ContentAttachment extends BaseModel {
     }
   }
 
-  @belongsTo(() => Site, { foreignKey: 'siteId' })
-  declare site: any
+  @belongsTo(() => Site)
+  declare site: BelongsTo<typeof Site>
 
-  @belongsTo(() => User, { foreignKey: 'userId' })
-  declare user: any
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 }

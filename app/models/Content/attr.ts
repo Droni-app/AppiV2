@@ -1,4 +1,5 @@
 import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import ContentPost from './post.js'
 import { randomUUID } from 'node:crypto'
 
@@ -28,6 +29,6 @@ export default class ContentAttr extends BaseModel {
   }
 
   // Define relationships if needed
-  @belongsTo(() => ContentPost, { foreignKey: 'contentPostId' })
-  declare contentPost: any
+  @belongsTo(() => ContentPost)
+  declare contentPost: BelongsTo<typeof ContentPost>
 }

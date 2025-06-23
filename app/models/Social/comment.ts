@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, beforeCreate, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { randomUUID } from 'node:crypto'
 import User from '#models/user'
 import Site from '#models/site'
@@ -41,9 +42,9 @@ export default class SocialComment extends BaseModel {
     }
   }
 
-  @belongsTo(() => User, { foreignKey: 'userId' })
-  declare user: any
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 
-  @belongsTo(() => Site, { foreignKey: 'siteId' })
-  declare site: any
+  @belongsTo(() => Site)
+  declare site: BelongsTo<typeof Site>
 }

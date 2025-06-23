@@ -1,10 +1,11 @@
 import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import LearnCourse from '#models/Learn/course'
 import { randomUUID } from 'node:crypto'
+import LearnCourse from '#models/Learn/course'
+import User from '#models/user'
 
-export default class LearnCourseLesson extends BaseModel {
+export default class LearnCourseInscription extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
 
@@ -12,37 +13,19 @@ export default class LearnCourseLesson extends BaseModel {
   declare learnCourseId: string
 
   @column()
-  declare name: string
+  declare userId: string
 
   @column()
-  declare slug: string
-
-  @column()
-  declare description: string | null
-
-  @column()
-  declare content: string | null
-
-  @column()
-  declare video: string | null
-
-  @column()
-  declare position: number
-
-  @column()
-  declare type: string
-
-  @column()
-  declare live: string | null
-
-  @column.date()
-  declare liveDate: DateTime | null
-
-  @column.date()
-  declare limitDate: DateTime | null
+  declare points: number
 
   @column()
   declare active: boolean
+
+  @column()
+  declare completed: boolean
+
+  @column()
+  declare certificate: string | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -51,12 +34,15 @@ export default class LearnCourseLesson extends BaseModel {
   declare updatedAt: DateTime
 
   @beforeCreate()
-  static assignUuid(lesson: LearnCourseLesson) {
-    if (!lesson.id) {
-      lesson.id = randomUUID()
+  static assignUuid(inscription: LearnCourseInscription) {
+    if (!inscription.id) {
+      inscription.id = randomUUID()
     }
   }
 
   @belongsTo(() => LearnCourse)
   declare learnCourse: BelongsTo<typeof LearnCourse>
+
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 }

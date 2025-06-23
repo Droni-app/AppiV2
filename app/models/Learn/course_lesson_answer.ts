@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { randomUUID } from 'node:crypto'
 import LearnCourseLesson from '#models/Learn/course_lesson'
 import User from '#models/user'
@@ -45,9 +46,9 @@ export default class LearnCourseLessonAnswer extends BaseModel {
     }
   }
 
-  @belongsTo(() => User, { foreignKey: 'userId' })
-  declare user: any
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 
-  @belongsTo(() => LearnCourseLesson, { foreignKey: 'lessonId' })
-  declare learnCourseLesson: any
+  @belongsTo(() => LearnCourseLesson)
+  declare learnCourseLesson: BelongsTo<typeof LearnCourseLesson>
 }

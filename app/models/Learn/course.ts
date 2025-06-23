@@ -1,9 +1,11 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, beforeCreate, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import { randomUUID } from 'node:crypto'
 import Site from '#models/site'
 import User from '#models/user'
 import LearnCourseLesson from '#models/Learn/course_lesson'
+import LearnCourseInscription from '#models/Learn/course_inscription'
 
 export default class LearnCourse extends BaseModel {
   public static table = 'learn_courses'
@@ -61,11 +63,14 @@ export default class LearnCourse extends BaseModel {
     foreignKey: 'learnCourseId',
     onQuery: (query) => query.orderBy('position', 'asc'),
   })
-  public learnLessons: any
+  declare learnLessons: HasMany<typeof LearnCourseLesson>
 
-  @belongsTo(() => Site, { foreignKey: 'siteId' })
-  declare site: any
+  @hasMany(() => LearnCourseInscription)
+  declare learnInscriptions: HasMany<typeof LearnCourseInscription>
 
-  @belongsTo(() => User, { foreignKey: 'userId' })
-  declare user: any
+  @belongsTo(() => Site)
+  declare site: BelongsTo<typeof Site>
+
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 }

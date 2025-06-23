@@ -2,10 +2,11 @@ import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column, beforeCreate, hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import { randomUUID } from 'node:crypto'
-import Enrollment from './enrollment.js'
+import Enrollment from '#models/enrollment'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -46,9 +47,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  @hasMany(() => Enrollment, { foreignKey: 'userId' })
-  declare enrollments: any
-
   @beforeCreate()
   static assignUuid(user: User) {
     if (!user.id) {
@@ -57,4 +55,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   }
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
+
+  @hasMany(() => Enrollment)
+  declare enrollments: HasMany<typeof Enrollment>
 }
