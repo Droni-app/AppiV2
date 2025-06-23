@@ -1,6 +1,6 @@
 import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import ContentPost from './post.js'
+import ContentPost from '#models/Content/post'
 import { randomUUID } from 'node:crypto'
 
 export default class ContentAttr extends BaseModel {
