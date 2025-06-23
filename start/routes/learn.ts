@@ -5,6 +5,7 @@ const LearnCoursesController = () => import('#controllers/Learn/courses_controll
 const LearnCourseLessonsController = () => import('#controllers/Learn/course_lessons_controller')
 const LearnCourseLessonAnswersController = () => import('#controllers/Learn/course_lesson_answers_controller')
 const LearnCourseQuestionsController = () => import('#controllers/Learn/course_questions_controller')
+const LearnCourseInscriptionsController = () => import('#controllers/Learn/course_inscriptions_controller')
 
 // Public routes
 router
@@ -21,6 +22,7 @@ router
 router
   .group(() => {
     router.resource('courses.lessons.answers', LearnCourseLessonAnswersController).only(['store'])
+    router.resource('courses.inscriptions', LearnCourseInscriptionsController).only(['index', 'store', 'destroy'])
   })
   .use([middleware.auth(), middleware.site()])
   .prefix('learn')
